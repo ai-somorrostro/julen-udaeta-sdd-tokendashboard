@@ -1,0 +1,230 @@
+:root {
+  --color-bg: #f6f7f9;
+  --color-surface: #ffffff;
+  --color-border: #d9dde3;
+  --color-text: #1c2128;
+  --color-text-muted: #5b6572;
+  --color-accent: #2563eb;
+  --color-accent-soft: #eaf0fe;
+  --color-error: #b42318;
+  --color-error-soft: #fdeceb;
+  --color-row-hover: #f4f6f9;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-md: 1rem;
+  --text-xl: 1.5rem;
+
+  --radius-md: 6px;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+
+  --table-min-width: 68rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+header,
+main {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: var(--space-5) var(--space-4);
+}
+
+header {
+  padding-bottom: 0;
+}
+
+h1 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+header p {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+h2 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+#filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.filter label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+input,
+select {
+  font: inherit;
+  color: inherit;
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+input {
+  min-width: 16rem;
+}
+
+select:disabled {
+  background-color: var(--color-bg);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+table {
+  width: 100%;
+  min-width: var(--table-min-width);
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--color-border);
+}
+
+th {
+  position: static;
+  background-color: var(--color-bg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+th:hover {
+  background-color: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+th:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: -2px;
+}
+
+th[aria-sort="ascending"],
+th[aria-sort="descending"] {
+  color: var(--color-accent);
+}
+
+th[aria-sort="ascending"]::after {
+  content: "\25B2";
+  margin-left: var(--space-1);
+}
+
+th[aria-sort="descending"]::after {
+  content: "\25BC";
+  margin-left: var(--space-1);
+}
+
+tbody tr:hover {
+  background-color: var(--color-row-hover);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+th:nth-child(n+2):nth-child(-n+4),
+td:nth-child(n+2):nth-child(-n+4),
+th:nth-child(n+7):nth-child(-n+10),
+td:nth-child(n+7):nth-child(-n+10) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.table-message td {
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+  white-space: normal;
+  font-size: var(--text-md);
+  color: var(--color-text-muted);
+}
+
+.table-message--error td {
+  color: var(--color-error);
+  background-color: var(--color-error-soft);
+}
+
+@media (max-width: 40rem) {
+  header,
+  main {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  #filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  input {
+    min-width: 0;
+  }
+}
