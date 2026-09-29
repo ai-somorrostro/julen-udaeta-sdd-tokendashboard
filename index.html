@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Modelos de IA</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Dashboard de Modelos de IA</h1>
+    <p>Comparativa de modelos open source: precios, TTFT, modalidades y consumo de tokens.</p>
+  </header>
+
+  <main>
+    <section id="filters" aria-labelledby="filters-heading">
+      <h2 id="filters-heading">Filtros</h2>
+
+      <div class="filter">
+        <label for="nameInput">Nombre del modelo</label>
+        <input type="text" id="nameInput" name="name" autocomplete="off" placeholder="Ej. Llama">
+      </div>
+
+      <div class="filter">
+        <label for="inputSelect">Modalidad de entrada</label>
+        <select id="inputSelect" name="inputModality" disabled>
+          <option value="">Todos</option>
+        </select>
+      </div>
+
+      <div class="filter">
+        <label for="outputSelect">Modalidad de salida</label>
+        <select id="outputSelect" name="outputModality" disabled>
+          <option value="">Todos</option>
+        </select>
+      </div>
+    </section>
+
+    <section aria-labelledby="table-heading">
+      <h2 id="table-heading">Comparativa de modelos</h2>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col" data-key="name">Modelo</th>
+              <th scope="col" data-key="inputPricePerToken">Precio entrada ($/1M tokens)</th>
+              <th scope="col" data-key="outputPricePerToken">Precio salida ($/1M tokens)</th>
+              <th scope="col" data-key="ttft_ms">TTFT (ms)</th>
+              <th scope="col" data-key="inputModality">Modalidad de entrada</th>
+              <th scope="col" data-key="outputModality">Modalidad de salida</th>
+              <th scope="col" data-key="inputTokensDay">Tokens entrada (día)</th>
+              <th scope="col" data-key="outputTokensDay">Tokens salida (día)</th>
+              <th scope="col" data-key="inputTokensWeek">Tokens entrada (semana)</th>
+              <th scope="col" data-key="outputTokensWeek">Tokens salida (semana)</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
