@@ -82,3 +82,20 @@ Todo el trabajo debe estructurarse bajo el prefijo `nombre.apellido` de cada des
 > - Gráficas individuales específicas de dicho modelo.
 >
 > *Condición técnica:* Todo nativo, sin dependencias externas y sin tests.
+
+---
+
+## 5. Ejecución Local
+
+El dashboard **debe servirse por HTTP**; no funciona abriéndolo directamente con doble clic.
+
+```bash
+python3 -m http.server 8000
+```
+
+Y abrir `http://localhost:8000` en el navegador.
+
+**Por qué falla con `file://`:** `app.js` carga los datos con `fetch('mock-data.json')`. Al abrir el
+fichero con el protocolo `file://`, el navegador trata el documento con origen `null` y bloquea esa
+petición por CORS, así que la carga falla y el dashboard se queda en estado de error. Servir por HTTP
+da al documento un origen real (`http://localhost:8000`) y la petición se resuelve con normalidad.
