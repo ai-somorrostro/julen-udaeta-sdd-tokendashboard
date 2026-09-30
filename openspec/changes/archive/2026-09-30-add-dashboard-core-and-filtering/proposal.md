@@ -9,10 +9,10 @@ This change establishes that base and delivers Feature 1 from the project README
 ## What Changes
 
 - Create the dashboard shell: `index.html`, `styles.css` and `app.js` (all currently empty), populated exclusively from `mock-data.json` via `fetch`.
-- Render the 10 models in an 11-column table covering input price, output price, TTFT, input modality, output modality, and daily/weekly input/output token consumption.
+- Render the 10 models in a 10-column table covering input price, output price, TTFT, input modality, output modality, and daily/weekly input/output token consumption.
 - Derive the modality filter options from the loaded data instead of hardcoding them, so the filters keep working when the placeholder data is replaced by the real feed.
 - Add filtering by model name (case-insensitive substring) and by modality, using two independent selects — one for input modality, one for output modality — each matching its field exactly.
-- Add sorting on any of the 11 columns by clicking its header, toggling between ascending and descending.
+- Add sorting on any of the 10 columns by clicking its header, toggling between ascending and descending.
 - Preserve the order of `mock-data.json` on load; no sort is applied until the user clicks a header.
 - Keep sort state independent of filter state, so changing a filter never resets an active sort.
 - Add the empty and load-failure states that filtering makes reachable.

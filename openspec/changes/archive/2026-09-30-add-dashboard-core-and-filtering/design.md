@@ -107,7 +107,7 @@ The active header carries `aria-sort="ascending"` or `"descending"`; all other h
 
 - **Opening `index.html` directly from the filesystem yields a blank table** → `fetch` is subject to CORS and fails on an `file://` origin in Chrome. The README must document serving the directory over HTTP (for example `python3 -m http.server`) as a prerequisite. This is the most likely first-30-seconds failure a reviewer will hit, and it will look like an application bug.
 - **The output modality filter appears to do nothing** → every model in the current data outputs `Text`, so selecting it keeps all 10 rows. This is a property of open-weight models, not a defect. It is called out in the spec as a scenario so it reads as intended behaviour, and the filter is retained because it becomes meaningful against real data.
-- **A column whose sort silently stops responding** → see the `ttft_ms` decision above. The mitigation is the verbatim mapping plus a manual check that all 11 headers reorder.
+- **A column whose sort silently stops responding** → see the `ttft_ms` decision above. The mitigation is the verbatim mapping plus a manual check that all 10 headers reorder.
 - **Consumption figures with no thousands separators are hard to scan** → deferred; see Open Questions.
 - **Eleven columns exceed a narrow viewport** → wrap the table in a horizontally scrollable container rather than reducing the column set, since every field is required by the brief.
 - **`mock-data.json` is CRLF in the working tree while `HEAD` is LF** → the current diff is 123 changed lines with zero content change. Normalise the line endings in a separate commit so the review diff for this change shows only real work.

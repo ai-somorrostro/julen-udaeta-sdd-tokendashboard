@@ -107,7 +107,7 @@ Every column of the table SHALL be sortable by activating its header. The first 
 
 #### Scenario: Every column is sortable
 
-- **WHEN** each of the 11 column headers is activated in turn
+- **WHEN** each of the 10 column headers is activated in turn
 - **THEN** each orders the rows by the metric that column displays
 
 ### Requirement: Sort direction toggles

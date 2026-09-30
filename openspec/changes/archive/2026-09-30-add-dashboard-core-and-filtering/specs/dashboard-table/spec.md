@@ -22,7 +22,7 @@ The dashboard SHALL load model data only from the `mock-data.json` file located 
 
 ### Requirement: Model comparison table with all metric columns
 
-The dashboard SHALL present the loaded models in a single table. The table SHALL contain one column per model field, for a total of 11 columns, and one row per model, for a total of 10 rows. Each column SHALL be headed by a label identifying the metric it displays.
+The dashboard SHALL present the loaded models in a single table. The table SHALL contain one column per model field, for a total of 10 columns, and one row per model, for a total of 10 rows. Each column SHALL be headed by a label identifying the metric it displays.
 
 #### Scenario: All models are listed
 
@@ -32,7 +32,7 @@ The dashboard SHALL present the loaded models in a single table. The table SHALL
 #### Scenario: Every metric is represented
 
 - **WHEN** the table headers are inspected
-- **THEN** 11 columns are present, covering model name, input price, output price, time to first token, input modality, output modality, and input/output token consumption for both the daily and weekly periods
+- **THEN** 10 columns are present, covering model name, input price, output price, time to first token, input modality, output modality, and input/output token consumption for both the daily and weekly periods
 
 #### Scenario: A row shows the metrics of its own model
 
