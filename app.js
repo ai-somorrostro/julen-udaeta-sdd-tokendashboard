@@ -150,7 +150,7 @@ function buildRow(model) {
     const style = cellStyle(key, value);
     return `<td${style ? ` style="${style}"` : ''}>${escapeHtml(formatCell(key, value))}</td>`;
   }).join('');
-  return `<tr>${cells}</tr>`;
+  return `<tr data-name="${escapeHtml(model.name)}">${cells}</tr>`;
 }
 
 function renderMessage(text, variant) {
@@ -273,6 +273,12 @@ function cacheDom() {
   dom.consumptionChart = document.getElementById('consumptionChart');
   dom.priceHits = [];
   dom.consumptionHits = [];
+  dom.detailOverlay = document.getElementById('detail-overlay');
+  dom.detailPanel = document.getElementById('detail-panel');
+  dom.detailClose = document.getElementById('detail-close');
+  dom.detailTitle = document.getElementById('detail-title');
+  dom.detailContent = document.getElementById('detail-content');
+  dom.detailCharts = document.getElementById('detail-charts');
 
   dom.nameInput.addEventListener('input', event => {
     state.filters.name = event.target.value;
@@ -293,6 +299,29 @@ function cacheDom() {
     const header = event.target.closest('th[data-key]');
     if (header && dom.thead.contains(header)) {
       toggleSort(header.dataset.key);
+    }
+  });
+
+  dom.tbody.addEventListener('click', event => {
+    const row = event.target.closest('tr');
+    if (!row || !dom.tbody.contains(row)) {
+      return;
+    }
+    const name = row.getAttribute('data-name');
+    if (!name) {
+      return;
+    }
+    const model = state.models.find(candidate => candidate.name === name);
+    if (model) {
+      openDetail(model);
+    }
+  });
+
+  dom.detailClose.addEventListener('click', closeDetail);
+  dom.detailOverlay.addEventListener('click', closeDetail);
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && dom.detailPanel && !dom.detailPanel.hidden) {
+      closeDetail();
     }
   });
 
@@ -633,6 +662,77 @@ function renderCharts(rows) {
   hideTooltip();
   drawPriceChart(rows);
   drawConsumptionChart(rows);
+}
+
+function renderDetail(model) {
+  dom.detailTitle.textContent = model.name;
+
+  const entries = [
+    ['Nombre', model.name],
+    ['Precio entrada', priceFormat.format(model.inputPricePerToken * TOKENS_PER_MILLION) + ' /1M'],
+    ['Precio salida', priceFormat.format(model.outputPricePerToken * TOKENS_PER_MILLION) + ' /1M'],
+    ['TTFT', `${numberFormat.format(model.ttft_ms)} ms`],
+    ['Modalidad entrada', model.inputModality],
+    ['Modalidad salida', model.outputModality],
+    ['Tokens entrada (día)', numberFormat.format(model.inputTokensDay)],
+    ['Tokens salida (día)', numberFormat.format(model.outputTokensDay)],
+    ['Tokens entrada (semana)', numberFormat.format(model.inputTokensWeek)],
+    ['Tokens salida (semana)', numberFormat.format(model.outputTokensWeek)]
+  ];
+  dom.detailContent.innerHTML =
+    `<dl style="display:contents">${entries.map(([label, value]) =>
+      `<dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd>`).join('')}</dl>`;
+
+  dom.detailCharts.innerHTML =
+    '<canvas id="detailChart" width="560" height="220" role="img" aria-label="Desglose de consumo diario y semanal del modelo"></canvas>';
+  drawDetailChart(model);
+}
+
+function drawDetailChart(model) {
+  const canvas = document.getElementById('detailChart');
+  if (!canvas) {
+    return;
+  }
+  const cssHeight = 220;
+  const { context, width, height } = prepareCanvas(canvas, cssHeight);
+  context.clearRect(0, 0, width, height);
+
+  const series = [
+    { label: 'Entrada (día)', value: model.inputTokensDay, color: COLORS.daily },
+    { label: 'Salida (día)', value: model.outputTokensDay, color: COLORS.input },
+    { label: 'Entrada (semana)', value: model.inputTokensWeek, color: COLORS.weekly },
+    { label: 'Salida (semana)', value: model.outputTokensWeek, color: COLORS.output }
+  ];
+  const maxValue = niceCeil(Math.max(...series.map(item => item.value)));
+  const padding = { top: 12, right: 12, bottom: 12, left: 132 };
+  const plotWidth = width - padding.left - padding.right;
+  const rowHeight = (height - padding.top - padding.bottom) / series.length;
+
+  context.font = CHART_FONT;
+  series.forEach((item, index) => {
+    const y = padding.top + index * rowHeight;
+    const barWidth = (item.value / maxValue) * plotWidth;
+    context.fillStyle = item.color;
+    context.fillRect(padding.left, y + 4, barWidth, rowHeight - 8);
+    context.fillStyle = COLORS.text;
+    context.textAlign = 'left';
+    context.textBaseline = 'middle';
+    context.fillText(numberFormat.format(item.value), padding.left + barWidth + 6, y + rowHeight / 2);
+    context.textAlign = 'right';
+    context.fillText(ellipsize(context, item.label, padding.left - 12), padding.left - 8, y + rowHeight / 2);
+  });
+}
+
+function openDetail(model) {
+  renderDetail(model);
+  dom.detailOverlay.hidden = false;
+  dom.detailPanel.hidden = false;
+  dom.detailClose.focus();
+}
+
+function closeDetail() {
+  dom.detailOverlay.hidden = true;
+  dom.detailPanel.hidden = true;
 }
 
 function init() {
