@@ -99,3 +99,10 @@ Y abrir `http://localhost:8000` en el navegador.
 fichero con el protocolo `file://`, el navegador trata el documento con origen `null` y bloquea esa
 petición por CORS, así que la carga falla y el dashboard se queda en estado de error. Servir por HTTP
 da al documento un origen real (`http://localhost:8000`) y la petición se resuelve con normalidad.
+
+
+## Docker
+
+### Construir la imagen
+```bash
+docker build -t tokendashboard .
